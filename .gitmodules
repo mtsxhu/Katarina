@@ -1,0 +1,3 @@
+[submodule "Katarina/vendor/spdlog"]
+	path = Katarina/vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
