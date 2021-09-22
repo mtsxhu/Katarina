@@ -1,7 +1,7 @@
-.vs/
-*.sln
+/.vs
+/bin
+/bin-int
+/*.sln
 *.vcxproj
-*.vcxproj.filters
-*.vcxproj.user
-bin-int/
-bin/
+*.filters
+*.user
