@@ -42,3 +42,7 @@
 #define KT_INFO(...)	::Katarina::Log::GetClientLogger()->info(_VA_ARGS_)
 #define KT_TRACE(...)	::Katarina::Log::GetClientLogger()->trace(_VA_ARGS_)
 #define KT_FATAL(...)	::Katarina::Log::GetClientLogger()->critical(_VA_ARGS_)
+
+#define SHIFT_LEFT(x) (1<<(x))
+
+#define real_t double
