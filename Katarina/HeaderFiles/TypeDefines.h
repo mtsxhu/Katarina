@@ -1,13 +1,13 @@
 #pragma once
-
+#include<limits>
 #ifdef KT_PLATFORM_WINDWOS
-	#ifdef KT_BUILD_DLL
-		#define KATARINA_API _declspec(dllexport)
-	#else
-		#define KATARINA_API _declspec(dllimport)
-	#endif 
+#ifdef KT_BUILD_DLL
+#define KATARINA_API _declspec(dllexport)
 #else
-	#error  Katarina only support Windwos!
+#define KATARINA_API _declspec(dllimport)
+#endif 
+#else
+#error  Katarina only support Windwos!
 #endif
 
 #ifndef _ALWAYS_INLINE_
@@ -46,3 +46,6 @@
 #define SHIFT_LEFT(x) (1<<(x))
 
 #define real_t double
+
+#define KT_PI 3.14159265358979323846
+const real_t infinity = std::numeric_limits<real_t>::infinity();
