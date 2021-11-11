@@ -13,25 +13,25 @@ namespace Katarina
 		virtual std::tuple<bool, Vector3, Ray> scatter(const Ray& in, const CollideRecord& rec)const override
 		{
 			auto attenuation = Vector3(1.0, 1.0, 1.0);
-			real_t refractionRatio = rec.frontFace ? (1.0 / this->RefractionIndex) : this->RefractionIndex;
+			real_t refractionRatio = rec.frontFace ? (1.0 / RefractionIndex) : RefractionIndex;
 			Vector3 unitDirection = in.getDirection().normalize();
 
 			real_t cosTheta = fmin(Vector3::dot(-unitDirection, rec.normal), 1.0);
 			double sinTheta = sqrt(1.0 - cosTheta * cosTheta);
 			bool cannotRefract = refractionRatio * sinTheta > 1.0;
 
-			Vector3 refracted;
+			Vector3 refractedDirection;
 			if (cannotRefract || reflectance(cosTheta, refractionRatio) > Math::RandomDouble())
 			{
-				refracted = unitDirection.reflect(rec.normal);
+				refractedDirection = unitDirection.reflect(rec.normal);
 			}
 			else
 			{
-				refracted = unitDirection.refract(rec.normal, refractionRatio);
+				refractedDirection = unitDirection.refract(rec.normal, refractionRatio);
 			}
 
-			Ray scattered = Ray(rec.position, refracted);
-			return std::make_tuple(true, refracted, scattered);
+			Ray scattered = Ray(rec.position, refractedDirection);
+			return std::make_tuple(true, attenuation, scattered);
 		}
 
 	private:

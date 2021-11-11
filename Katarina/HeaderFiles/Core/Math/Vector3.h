@@ -9,9 +9,13 @@ namespace Katarina {
 		Vector3() = default;
 		Vector3(real_t x, real_t y, real_t z) : coord{ x, y, z } {}
 		Vector3(real_t x) : x(x), y(x), z(x) {}
-
+		_FORCE_INLINE_ bool nearZearo()
+		{
+			const auto s = 1e-8;
+			return (fabs(x) < s) && (fabs(y) < s) && (fabs(z) < s);
+		}
 		Vector3& normalize();
-
+		Vector3& normalize()const;
 		Vector3 operator-() const;
 		real_t operator[](int i) const;
 		real_t& operator[](int i);
@@ -27,7 +31,7 @@ namespace Katarina {
 		Vector3 operator+(const Vector3& vec)const;
 		real_t length() const;
 
-		real_t length_squared() const;
+		real_t lengthSquared() const;
 
 		_FORCE_INLINE_ static real_t dot(const Vector3& u, const Vector3& v);
 

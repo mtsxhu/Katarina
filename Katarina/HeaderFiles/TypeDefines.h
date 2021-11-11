@@ -1,5 +1,4 @@
 #pragma once
-#include<limits>
 #ifdef KT_PLATFORM_WINDWOS
 #ifdef KT_BUILD_DLL
 #define KATARINA_API _declspec(dllexport)
@@ -47,5 +46,4 @@
 
 #define real_t double
 
-#define KT_PI 3.14159265358979323846
-const real_t infinity = std::numeric_limits<real_t>::infinity();
+

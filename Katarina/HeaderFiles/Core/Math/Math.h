@@ -57,7 +57,7 @@ namespace Katarina
 			while (true)
 			{
 				auto p = Random(-1, 1);
-				if (p.length_squared() >= 1) continue;
+				if (p.lengthSquared() >= 1) continue;
 				return p;
 			}
 		}
@@ -67,12 +67,12 @@ namespace Katarina
 			return RandomInUnitSphere();
 		};
 
-		static _FORCE_INLINE_ Vector3 RandomInUnitDisk()
+		_FORCE_INLINE_ static Vector3 RandomInUnitDisk()
 		{
 			while (true)
 			{
-				auto p = Vector3(Math::RandomDouble(-1, 1), Math::RandomDouble(-1, 1), 0);
-				if (p.length_squared() >= 1) continue;
+				auto p = Vector3(RandomDouble(-1, 1), RandomDouble(-1, 1), 0);
+				if (p.lengthSquared() >= 1) continue;
 				return p;
 			}
 		}

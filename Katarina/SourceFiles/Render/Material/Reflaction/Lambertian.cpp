@@ -4,9 +4,9 @@ namespace Katarina
 {
 	std::tuple<bool, Vector3, Ray> Lambertian::scatter(const Ray& in, const CollideRecord& rec) const
 	{
-		auto scatter_direction = rec.normal + Math::RandomUnitVector();
+		Vector3 scatter_direction = rec.normal + Math::RandomUnitVector();			// 随机向一个方向进行反射
 
-		if (Math::nearZero(scatter_direction))
+		if (scatter_direction.nearZearo())
 		{
 			scatter_direction = rec.normal;
 		}

@@ -34,32 +34,36 @@ namespace Katarina
 	// 通过 Collisionable 继承
 	inline std::pair<bool, CollideRecord> Sphere::collision(const Ray& ray, const real_t& t_min, const real_t& t_max) const
 	{
-		Vector3 oc = ray.getOrigin() - this->center;		// 光源到圆心的向量
+		Vector3 oc = ray.getOrigin() - this->center;
 
-		real_t a = Vector3::dot(ray.getDirection(), ray.getDirection());
-		real_t b = Vector3::dot(oc, ray.getDirection());		// oc在射线方向上的投影
-		real_t c = Vector3::dot(oc, oc) - this->radius * this->radius;	// 光线穿过圆的弦
-																		// discriminant
-		real_t discriminant = b * b - a * c;
-		if (discriminant > 0)
+		// 光线和圆组成的一元二次方程的a,b,c参数
+		real_t a = ray.getDirection().lengthSquared();
+		real_t halfB = Vector3::dot(oc, ray.getDirection());
+		real_t c = oc.lengthSquared() - this->radius * this->radius;
+		real_t discriminant = halfB * halfB - a * c;		// delta t
+		CollideRecord ret;									// 碰撞结果
+		if (discriminant < 0)
 		{
-			real_t t = (-b - sqrt(discriminant)) / a;
-			if (t < t_min || t > t_max)
+			return std::make_pair(false, ret);
+		}
+
+		auto sqrtd = std::sqrt(discriminant);
+		real_t root = (-halfB - sqrtd) / a;					// 交点，一元二次方程的求根公式（约掉了分子分母的常数2）,光线与圆相交的t
+		if (root < t_min || t_max < root)
+		{
+			root = (-halfB + sqrtd) / a;					// 将t设为离光源最近的点
+			if (root < t_min || t_max < root)
 			{
-				t = (-b + sqrt(discriminant)) / a;
-			}
-			if (t > t_min && t < t_max)
-			{
-				CollideRecord ret;
-				ret.t = t;
-				auto position = ray.pointAt(t);
-				ret.position = position;
-				ret.normal = (position - this->center) / this->radius;
-				ret.material = this->material;
-				return std::make_pair(true, ret);
+				return std::make_pair(false, ret);
 			}
 		}
-		return std::make_pair(false, CollideRecord());
+
+		ret.t = root;
+		ret.position = ray.pointAt(root);
+		auto outwardNormal = (ret.position - this->center) / this->radius;
+		ret.setFaceNormal(ray, outwardNormal);			// 让法线与入射方向相反
+		ret.material = this->material;
+		return std::make_pair(true, ret);
 	}
 
 }

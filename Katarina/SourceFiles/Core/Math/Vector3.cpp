@@ -11,6 +11,12 @@ namespace Katarina
 		return *this;
 	}
 
+	Vector3& Vector3::normalize()const
+	{
+		auto len = length();
+		return Vector3(x / len, y / len, z / len);
+	}
+
 	Vector3 Vector3::operator-() const { return Vector3(-x, -y, -z); }
 	real_t Vector3::operator[](int i) const { return coord[i]; }
 	real_t& Vector3::operator[](int i) { return coord[i]; }
@@ -53,10 +59,10 @@ namespace Katarina
 
 	real_t Vector3::length() const
 	{
-		return sqrt(length_squared());
+		return sqrt(lengthSquared());
 	}
 
-	real_t Vector3::length_squared() const
+	real_t Vector3::lengthSquared() const
 	{
 		return x * x + y * y + z * z;
 	}
@@ -69,8 +75,8 @@ namespace Katarina
 	_FORCE_INLINE_ Vector3 Vector3::refract(const Vector3& n, double etai_over_etat)
 	{
 		auto cos_theta = fmin(dot(-(*this), n), 1.0);
-		Vector3 r_out_perp = etai_over_etat * (-(*this) + cos_theta * n);
-		Vector3 r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.length_squared())) * n;
+		Vector3 r_out_perp = etai_over_etat * (*this + cos_theta * n);
+		Vector3 r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.lengthSquared())) * n;
 		return r_out_perp + r_out_parallel;
 	}
 

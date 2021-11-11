@@ -16,7 +16,7 @@ namespace Katarina
 		virtual std::tuple<bool, Vector3, Ray> scatter(const Ray& in, const CollideRecord& rec)const = 0;
 
 	protected:
-		Vector3 albedo;		// 反射率
-		real_t fuzzy;		// 模糊
+		Vector3 albedo{};		// 反射率
+		real_t fuzzy = 0;		// 模糊
 	};
 }

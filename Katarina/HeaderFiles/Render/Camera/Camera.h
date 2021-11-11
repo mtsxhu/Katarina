@@ -1,7 +1,6 @@
 #pragma once
 #include"Core/Math/Vector3.h"
 #include"Render/Ray/Ray.h"
-#include "Scene/Scene.h"
 #include <vector>
 #include "Core/Math/Vector3.h"
 #include "Core/Math/Math.h"
@@ -10,7 +9,7 @@ namespace Katarina
 	class KATARINA_API Camera
 	{
 	public:
-		Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, real_t vfov, real_t aspect_ratio, real_t aperture, real_t focus_dist) {
+		Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, real_t vfov, real_t aspect_ratio, real_t aperture, real_t focus_dist, real_t t0 = 0, real_t t1 = 0) {
 			auto theta = Math::Degrees2Radians(vfov);
 			auto h = tan(theta / 2);
 			auto viewport_height = 2.0 * h;
@@ -26,11 +25,15 @@ namespace Katarina
 			lowerLeftCorner = origin - horizontal / 2 - vertical / 2 - focus_dist * w;
 
 			lensRadius = aperture / 2;
+			time0 = t0;
+			time1 = t1;
 		}
 
 		Ray getRay(real_t u, real_t v) const
 		{
-			return Ray(origin, lowerLeftCorner + u * horizontal + v * vertical - origin);
+			Vector3 rd = lensRadius * Math::RandomInUnitDisk();
+			Vector3 offset = u * rd.x + v * rd.y;
+			return Ray(origin, lowerLeftCorner + u * horizontal + v * vertical - origin - offset, Math::RandomDouble(time0, time1));
 		}
 
 	private:
@@ -40,6 +43,7 @@ namespace Katarina
 		Vector3 vertical;
 		Vector3 u, v, w;
 		real_t lensRadius;
+		real_t time0, time1;
 	};
 
 }

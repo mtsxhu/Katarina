@@ -16,22 +16,4 @@ namespace Katarina
 	private:
 		std::vector<std::shared_ptr<Collisionable>> objects;
 	};
-
-	std::pair<bool, CollideRecord> CollisionableList::collision(const Ray& ray, const real_t& t_min, const real_t& t_max) const
-	{
-		CollideRecord temp_rec;
-		auto hit_anything = false;
-		auto closest_so_far = t_max;
-		CollideRecord rec;
-		for (const auto& object : objects) {
-			auto [ok, temp_rec] = object->collision(ray, t_min, closest_so_far);
-			if (ok) {
-				hit_anything = true;
-				closest_so_far = temp_rec.t;
-				rec = temp_rec;
-			}
-		}
-
-		return std::make_pair(hit_anything, rec);
-	}
 }
