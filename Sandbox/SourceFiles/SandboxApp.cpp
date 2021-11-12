@@ -20,7 +20,7 @@ Katarina::Application* Katarina::CreateApplication()
 	// 光圈和视距用于实现运动模糊
 	auto dist_to_focus = 10.0;	// 视距			
 	auto aperture = 0.1;	// 光圈
-	const auto aspectRatio = 3.0 / 2.0;
+	const auto aspectRatio = 16.0 / 9.0;
 	Camera camera(lookfrom, lookat, vup, 20, aspectRatio, aperture, dist_to_focus);
 
 	std::shared_ptr<Katarina::Render> render(new RayTracing(camera, scene, 50));

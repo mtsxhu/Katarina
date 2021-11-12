@@ -15,7 +15,7 @@ namespace Katarina
 			auto viewport_height = 2.0 * h;
 			auto viewport_width = aspect_ratio * viewport_height;
 
-			w = Vector3(lookfrom - lookat).normalize();
+			w = (lookfrom - lookat).normalize();
 			u = Vector3::cross(vup, w).normalize();
 			v = Vector3::cross(w, u);
 
@@ -29,11 +29,11 @@ namespace Katarina
 			time1 = t1;
 		}
 
-		Ray getRay(real_t u, real_t v) const
+		Ray getRay(real_t s, real_t t) const
 		{
 			Vector3 rd = lensRadius * Math::RandomInUnitDisk();
 			Vector3 offset = u * rd.x + v * rd.y;
-			return Ray(origin, lowerLeftCorner + u * horizontal + v * vertical - origin - offset, Math::RandomDouble(time0, time1));
+			return Ray(origin + offset, lowerLeftCorner + s * horizontal + t * vertical - origin - offset, Math::RandomDouble(time0, time1));
 		}
 
 	private:
