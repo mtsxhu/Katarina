@@ -12,5 +12,12 @@
 
 //------ Render Point------------------------
 #include "Render/Render.h"
-#include "Render/RayTracing/RayTracing.h"
+//#include "Render/RayTracing/RayTracing.h"
+//#include "Render/Scene/RayTracingScene.h"
+#include"Render/Model/Model.h"
+#include"Render/SoftRasterizer/SoftRasterizer.h"
+//------------------------------------------
+
+//------ Image ------------------------
+#include "Render/Image/tgaimage.h"
 //------------------------------------------

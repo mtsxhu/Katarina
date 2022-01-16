@@ -2,6 +2,7 @@
 #include"TypeDefines.h"
 #include "Core/Math/MathDefines.h"
 #include "Core/Math/Vector3.h"
+#include "Core/Math/Vector2.h"
 namespace Katarina
 {
 	class KATARINA_API Math
@@ -80,6 +81,18 @@ namespace Katarina
 		_FORCE_INLINE_ static bool  nearZero(const Vector3& vec)
 		{
 			return Math::IsEqualApprox(vec.x, 0) && Math::IsEqualApprox(vec.y, 0) && Math::IsEqualApprox(vec.z, 0);
+		}
+
+		static Vector3 GetBarycentric(const Trangle2 pts, const Point2& p)
+		{
+				auto v1 = Vector3(pts[2][0] - pts[0][0], pts[1][0] - pts[0][0], pts[0][0] - p[0]);
+				auto v2 = Vector3(pts[2][1] - pts[0][1], pts[1][1] - pts[0][1], pts[0][1] - p[1]);
+				Vector3 u = Vector3::cross(v1, v2);
+
+				// Èý½ÇÐÎÍË»¯
+				if (std::abs(u[2]) == 1)
+					return Vector3(-1, 1, 1);
+				return Vector3(1 - (u.x + u.y) / u.z, u.y / u.z, u.x / u.z);
 		}
 	};
 }

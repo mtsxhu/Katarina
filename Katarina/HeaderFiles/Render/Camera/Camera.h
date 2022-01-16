@@ -9,6 +9,7 @@ namespace Katarina
 	class KATARINA_API Camera
 	{
 	public:
+		Camera() = default;
 		Camera(Vector3 lookfrom, Vector3 lookat, Vector3 vup, real_t vfov, real_t aspect_ratio, real_t aperture, real_t focus_dist, real_t t0 = 0, real_t t1 = 0) {
 			auto theta = Math::Degrees2Radians(vfov);
 			auto h = tan(theta / 2);
