@@ -42,12 +42,6 @@ namespace Katarina {
 
 		_FORCE_INLINE_ static Vector3 cross(const Vector3& u, const Vector3& v);
 
-
-		_FORCE_INLINE_ Vector3 operator ^(const Vector3& v) const
-		{
-			return Vector3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x);
-		}
-
 	public:
 		enum Axis
 		{

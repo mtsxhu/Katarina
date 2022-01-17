@@ -17,7 +17,7 @@ namespace Katarina
 			auto viewport_width = aspect_ratio * viewport_height;
 
 			w = (lookfrom - lookat).normalize();
-			u = Vector3::cross(vup, w).normalize();
+			u =  Vector3::cross(vup, w).normalize();
 			v = Vector3::cross(w, u);
 
 			origin = lookfrom;

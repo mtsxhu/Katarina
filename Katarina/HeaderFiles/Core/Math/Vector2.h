@@ -17,6 +17,20 @@ namespace Katarina
 			return x * v.y - y * v.x;
 		}
 
+		Vector2 operator+(const Vector2& p_v) const
+		{
+			return Vector2(x + p_v.x, y + p_v.y);
+		}
+
+		Vector2 operator*(const real_t& rvalue) const
+		{
+			return Vector2(x * rvalue, y * rvalue);
+		}
+
+		_FORCE_INLINE_ Vector2 operator-(const Vector2& p_v) const {
+			return Vector2(x - p_v.x, y - p_v.y);
+		}
+
 		_FORCE_INLINE_ real_t& operator[](int p_idx)
 		{
 			return p_idx ? y : x;

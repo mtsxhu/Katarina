@@ -45,16 +45,17 @@ namespace Katarina
             for (int j = 0; j < 3; j++) 
             {
                 Vector3 v = model->vert(face[j]);
-                screen_coords[j] = Point2((v.x + 1.) * width / 2., (v.y + 1.) * height / 2.);
+                screen_coords[j] = Point2((v.x + 1) * width / 2, (v.y + 1) * height / 2);
                 world_coords[j] = v;
             }
-            Vector3 n = (world_coords[2] - world_coords[0]) ^ (world_coords[1] - world_coords[0]);
+            Vector3 n = Vector3::cross( world_coords[2] - world_coords[0] , world_coords[1] - world_coords[0]);
             n.normalize();
             real_t intensity = Vector3::dot( n , light_dir);
             if (intensity > 0) 
             {
-                fillTriangle(Trangle2{ screen_coords[0], screen_coords[1], screen_coords[2] }, image,
-                    TGAColor(intensity * 255, intensity * 255, intensity * 255, 255));
+                Trangle2 trangle{ screen_coords[0], screen_coords[1], screen_coords[2] };
+                TGAColor color( intensity * 255, intensity * 255, intensity * 255, 255 );
+                fillTriangle(trangle, image, color);
             }
         }
         // image.flip_vertically();
@@ -116,26 +117,35 @@ namespace Katarina
 
     void SoftRasterizer::fillTriangle(Trangle2 trangle,TGAImage& image, const TGAColor& color)const
     {
-        Point2 bboxmin(image.get_width() - 1, image.get_height() - 1);
-        Point2 bboxmax(0, 0);
-        Point2 clamp(image.get_width() - 1, image.get_height() - 1);
-        for (int i = 0; i < 3; i++) 
+        // 不考虑退化三角形
+        if (trangle[0].y == trangle[1].y && trangle[0].y == trangle[2].y) 
+            return;
+
+        if (trangle[0].y > trangle[1].y)
         {
-            for (int j = 0; j < 2; j++) 
-            {
-                bboxmin[j] = std::max(0.0, std::min(bboxmin[j], trangle[i][j]));
-                bboxmax[j] = std::min(clamp[j], std::max(bboxmax[j], trangle[i][j]));
-            }
+            std::swap(trangle[0], trangle[1]);
         }
-        Point2 p;
-        for (p.x = bboxmin.x; p.x <= bboxmax.x; p.x++)
+        if (trangle[0].y > trangle[2].y)
         {
-            for (p.y = bboxmin.y; p.y <= bboxmax.y; p.y++)
+            std::swap(trangle[0], trangle[2]);
+        }
+        if (trangle[1].y > trangle[2].y)
+        {
+            std::swap(trangle[1], trangle[2]);
+        }
+        int total_height = trangle[2].y-trangle[0].y;
+        for (int i=0; i<total_height; i++) 
+        {
+            bool second_half = i>trangle[1].y-trangle[0].y || trangle[1].y==trangle[0].y;
+            int segment_height = second_half ? trangle[2].y-trangle[1].y : trangle[1].y-trangle[0].y;
+            real_t alpha = (real_t)i/total_height;
+            real_t beta  = (real_t)(i-(second_half ? trangle[1].y-trangle[0].y : 0))/segment_height;
+            Vector2 A = trangle[0] + (trangle[2]-trangle[0])*alpha;
+            Vector2 B = second_half ? trangle[1] + (trangle[2]-trangle[1])*beta : trangle[0] + (trangle[1]-trangle[0])*beta;
+            if (A.x>B.x) std::swap(A, B);
+            for (int j=A.x; j<=B.x; j++)
             {
-                Vector3 bc_screen = Math::GetBarycentric(trangle, p);
-                if (bc_screen.x < 0 || bc_screen.y < 0 || bc_screen.z < 0) 
-                    continue;
-                image.set(p.x, p.y, color);
+                image.set(j, trangle[0].y+i, color);
             }
         }
      }
