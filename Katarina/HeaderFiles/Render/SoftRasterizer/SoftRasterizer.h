@@ -14,13 +14,18 @@ namespace Katarina
 		virtual void run() const override;
 	private:
 
-		void drawLine(Point2 p1, Point2 p2, TGAImage& image, const TGAColor& color)const;
+		void drawLine(Point2i p1, Point2i p2, TGAImage& image, const TGAColor& color)const;
 		
 		void drawHead()const;
 
 		void drawFilledHead()const;
 
-		void fillTriangle(Trangle2 trangle, TGAImage& image, const TGAColor& color)const;
+		void fillTriangle(Trangle2i trangle, TGAImage& image, const TGAColor& color)const;
+
+	private:
+		void scanLine(Trangle2i trangle, TGAImage& image, const TGAColor& color)const;
+		void barycentric(Trangle2i trangle, TGAImage& image, const TGAColor& color)const;
+
 	private:
 		std::shared_ptr< Model> model;
 	};

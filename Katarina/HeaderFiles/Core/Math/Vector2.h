@@ -1,18 +1,20 @@
 #pragma once
 #include"TypeDefines.h"
+#include<iostream>
 namespace Katarina
 {
+	template<typename T>
 	class KATARINA_API Vector2
 	{
 	public:
 		Vector2() = default;
-		Vector2(real_t a, real_t b) :x(a), y(b) {}
-		_FORCE_INLINE_ real_t Vector2::dot(const Vector2& v) const 
+		Vector2(T a, T b) :x(a), y(b) {}
+		_FORCE_INLINE_ T Vector2::dot(const Vector2& v) const 
 		{
 			return x * v.x + y * v.y;
 		}
 
-		_FORCE_INLINE_ real_t Vector2::cross(const Vector2& v) const
+		_FORCE_INLINE_ T Vector2::cross(const Vector2& v) const
 		{
 			return x * v.y - y * v.x;
 		}
@@ -22,7 +24,7 @@ namespace Katarina
 			return Vector2(x + p_v.x, y + p_v.y);
 		}
 
-		Vector2 operator*(const real_t& rvalue) const
+		Vector2 operator*(const T& rvalue) const
 		{
 			return Vector2(x * rvalue, y * rvalue);
 		}
@@ -31,11 +33,11 @@ namespace Katarina
 			return Vector2(x - p_v.x, y - p_v.y);
 		}
 
-		_FORCE_INLINE_ real_t& operator[](int p_idx)
+		_FORCE_INLINE_ T& operator[](int p_idx)
 		{
 			return p_idx ? y : x;
 		}
-		_FORCE_INLINE_ const real_t& operator[](int p_idx) const
+		_FORCE_INLINE_ const T& operator[](int p_idx) const
 		{
 			return p_idx ? y : x;
 		}
@@ -48,21 +50,29 @@ namespace Katarina
 		union {
 			struct {
 				union {
-					real_t x;
-					real_t width;
+					T x;
+					T width;
 				};
 				union {
-					real_t y;
-					real_t height;
+					T y;
+					T height;
 				};
 			};
 
-			real_t coord[2] = { 0 };
+			T coord[2] = { 0 };
 		};
 	};
 
-	using Point2 = Vector2;
-	using Trangle2 = Vector2[3];
+	template<typename T>
+	_FORCE_INLINE_ std::ostream& operator<<(std::ostream& os, const Vector2<T>& vec)
+	{
+		return os << vec.x << " " << vec.y ;
+	}
+
+	using Point2 = Vector2<real_t>;
+	using Trangle2 = Vector2<real_t>[3];
+	using Point2i = Vector2<int>;
+	using Trangle2i = Vector2<int>[3];
 }
 
 

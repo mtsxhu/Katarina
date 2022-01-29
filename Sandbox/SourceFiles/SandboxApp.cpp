@@ -27,7 +27,7 @@ public:
 
 Katarina::Application* Katarina::CreateApplication()
 {
-	std::shared_ptr<Katarina::Model> model(new Model("C:/Users/LCX/Desktop/Katarina/Sandbox/obj/african_head/african_head.obj"));
+	std::shared_ptr<Katarina::Model> model(new Model("D:/Code/Katarina/Sandbox/obj/african_head/african_head.obj"));
 	std::shared_ptr<Katarina::Render> render(new SoftRasterizer(model));
     return new Sandbox(render);
 }

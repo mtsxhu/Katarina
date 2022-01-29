@@ -46,4 +46,5 @@
 
 #define real_t double
 
+#define CMP_EPSILON 0.00001 
 

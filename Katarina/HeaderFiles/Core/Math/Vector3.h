@@ -84,5 +84,9 @@ namespace Katarina {
 			+ u.z * v.z;
 	}
 
+	_FORCE_INLINE_ std::ostream& operator<<(std::ostream& os, const Vector3& vec)
+	{
+		return os << vec.x << " " << vec.y << " " << vec.z;
+	}
 }
 
